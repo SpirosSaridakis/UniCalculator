@@ -1,0 +1,51 @@
+﻿@code {
+    [Parameter]
+    public string Title { get; set; } = "SDG Goal";
+
+    [Parameter]
+    public string Description { get; set; } = "This is the description of the SDG goal.";
+
+    private bool isPopupVisible;
+
+    private void TogglePopup()
+    {
+        isPopupVisible = !isPopupVisible;
+    }
+}
+
+<div class="card m-2" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">@Title</h5>
+        <p class="card-text">@Description</p>
+        <div class="d-flex justify-content-between">
+            <select class="form-select">
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+            </select>
+            <button class="btn btn-primary ms-2" @onclick="TogglePopup">
+                <i class="bi bi-question-circle"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@if (isPopupVisible)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More Info</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This popup contains more details about @Title.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
