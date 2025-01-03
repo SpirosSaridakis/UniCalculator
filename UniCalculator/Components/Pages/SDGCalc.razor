@@ -3,9 +3,8 @@
 
 <h1 class="text-center">Sustainable Development Goals</h1>
 
-<div class="d-flex flex-wrap justify-content-center">
-    @for (int i = 1; i <= 17; i++)
-    {
-        <SDGCard Title=@($"SDG Goal {i}") Description=@($"Description of SDG Goal @i") />
-    }
+<div class="d-flex flex-wrap">
+    
+    <SDGCard Title= "SDG Goal" Description= "Description of SDG Goal" Selectors="2"/>
+
 </div>
