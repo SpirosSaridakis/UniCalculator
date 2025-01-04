@@ -14,14 +14,32 @@
                     <option>Option 3</option>
                 </select>
             }
-            <!--This button does not work-->
-            <button class="btn btn-primary ms-2" @onclick="GoToInfo">
-                <i class="bi bi-question-circle"></i>
+            <button class="btn btn-primary ms-2" style="z-index: 999;" @onclick="TogglePopup">
+                <i class="bi bi-question-circle"></i> Info
             </button>
         </div>
     </div>
 </div>
 
+@if (isPopupVisible)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More Info</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This popup contains more details about @Title.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 
 @code {
@@ -34,9 +52,12 @@
     [Parameter]
     public int Selectors { get; set; }
 
-    private void GoToInfo()
+    private bool isPopupVisible;
+
+    private void TogglePopup()
     {
-        Console.WriteLine("Button pressed");
-        NavigationManager.NavigateTo("/counter");
+        isPopupVisible = !isPopupVisible;
     }
 }
+
+
