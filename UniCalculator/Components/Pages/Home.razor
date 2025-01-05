@@ -1,33 +1,53 @@
 ﻿@page "/"
 <PageTitle>Home</PageTitle>
 
-<div class="container py-5">
-    <h1 class="display-4 text-center mb-4">About the Project</h1>
+<div class="container p-0">
+
+    <div class="text-center" style="margin-top: 5px;">
+        <img src="logo-pda.png" style="max-width: 150px; border-radius: 8px; margin-top: 0; margin-bottom: 0;">
+    </div>
+
+    <h1 class="display-4 text-center" style="margin-top: 5px;">About the Project</h1> 
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <p class="lead text-center">
+            <p class="lead text-center" style="margin-top: 5px;">
                 This project will serve as an online calculator that evaluates if a university has reached its
                 Sustainable Development Goals (SDGs).
             </p>
 
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">What are Sustainable Development Goals?</h5>
-                    <p>
-                        The United Nations Sustainable Development Goals (SDGs) are a collection of 17 global goals
-                        designed to be a "blueprint to achieve a better and more sustainable future for all" by 2030.
-                    </p>
-                </div>
-            </div>
-
             <hr />
 
-            <h4 class="mt-4">Our Goal</h4>
+            <h4 class="mt-3 text-center" style="margin-bottom: 8px; margin-top: 8px;">Our Goal</h4>
             <p>
                 Our goal is to create an accessible and user-friendly tool for university administrators and stakeholders
                 to easily evaluate and track their progress toward achieving these important goals.
             </p>
+
+            <hr />
+
+            <h4 class="mt-3 text-center" style="margin-bottom: 10px; margin-top: 8px;">Technology Stack</h4>
+            <p style="margin-bottom: 3px;">
+                This project was developed using the following technologies:
+            </p>
+            <ul>
+                <li><strong>Blazor</strong> - A framework for building interactive web UIs using C# instead of JavaScript.</li>
+                <li><strong>C#</strong> - The primary programming language used for the project's backend logic.</li>
+                <li><strong>.NET 8</strong> - The latest version of the .NET framework, offering improved performance and features.</li>
+                <li><strong>Bootstrap</strong> - A popular CSS framework used to ensure a responsive and visually appealing design.</li>
+            </ul>
+            <hr />
+            <h4 class="mt-3 text-center" style="margin-bottom: 10px; margin-top: 8px;">Website Structure</h4>
+            <p style="margin-bottom: 3px;">
+                The website has 3 main pages:
+            </p>
+            <ul>
+                <li><strong>Home</strong> - This page, showing information about the development of this project.</li>
+                <li><strong>About SDGs</strong> - A page diving deeper into what Sustainable Development Goals are. </li>
+                <li><strong>Calculator</strong> - A page used to calculate a university's degree of compliance with the SDGs. </li>
+            </ul>
+            <hr />
+
         </div>
     </div>
 </div>
