@@ -1,0 +1,117 @@
+@inject NavigationManager NavigationManager
+
+<div class="card m-2 shadow-lg" style="width: 25rem;">
+    <div class="card-body">
+        <h5 class="card-title card-title-underline">@Title</h5>
+        <div class="d-flex flex-column justify-content-between">
+            @for (int j = 1; j <= IndexesType1; j++)
+            {
+                <div class="d-flex flex-row align-items-center" style="gap: 10px;">
+                    <p style="width: 55px">@($"Index {IndexesArray[k]}:")</p>
+                    <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                        <option selected disabled>@($"Value 1")</option>
+                        <option>0</option>
+                        <option>0.25</option>
+                        <option>1</option>
+                    </select>
+
+                    @for (int i = 2; i <= 3; i++)
+                    {
+                        <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                            <option selected disabled>@($"Value {i}")</option>
+                            <option>0</option>
+                            <option>1</option>
+                        </select>
+                    }
+                </div>
+                k++;
+            }
+            @for (int j = 1; j <= IndexesType2; j++)
+            {
+                <div class="d-flex flex-row align-items-center" style="gap: 10px;">
+                    <p style="width: 55px">@($"Index {IndexesArray[k]}:")</p>
+                    @for (int i = 1; i <= 3; i++)
+                    {
+                        <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                            <option selected disabled>@($"Value {i}")</option>
+                            <option>0</option>
+                            <option>1</option>
+                        </select>
+                    }
+                </div>
+                k++;
+                if(j == IndexesType2){
+                    k = 0;
+                }
+            }
+
+            <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 10px;">
+                <button class="btn btn-primary" style="z-index: 0;" @onclick="Calculate">Calculate</button>
+
+                <button class="btn p-0"
+                        style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
+                        @onclick="TogglePopup">
+                    <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (isPopupVisible)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More Info</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This popup contains more details about @Title.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    //Type 2 indexes have 2 values, 0 and 1
+    [Parameter]
+    public int IndexesType2 { get; set; }
+
+    //Type 1 indexes have 2 values, 0, 0.25 and 1
+    [Parameter]
+    public int IndexesType1 { get; set; }
+
+    [Parameter]
+    public int[] IndexesArray { get; set;}
+
+    private bool isPopupVisible;
+
+    public int k { get; set; } = 0;
+
+    private void TogglePopup()
+    {
+        isPopupVisible = !isPopupVisible;
+    }
+    private void Calculate(MouseEventArgs e)
+    {
+        Console.WriteLine("calculate pressed");
+    }
+}
+
+<style>
+.card-title-underline {
+    text-decoration: underline;
+    margin-bottom: 10px; /* Adjust padding as needed */
+}
+</style>
+
