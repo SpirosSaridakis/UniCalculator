@@ -2,8 +2,48 @@
 @rendermode InteractiveServer
 
 <title>Calculator</title>
-<SDGCard Title="SDG Goal" Description="Description of SDG Goal" Selectors="2" />
 
+<div class="grid-container">
+    <SDGCard Title="SDG Goal 1" Description="Description of SDG Goal 1" Selectors="2" />
+    <SDGCard Title="SDG Goal 2" Description="Description of SDG Goal 2" Selectors="2" />
+    <SDGCard Title="SDG Goal 3" Description="Description of SDG Goal 3" Selectors="2" />
+    <SDGCard Title="SDG Goal 4" Description="Description of SDG Goal 4" Selectors="2" />
+    <SDGCard Title="SDG Goal 5" Description="Description of SDG Goal 5" Selectors="2" />
+    <SDGCard Title="SDG Goal 6" Description="Description of SDG Goal 6" Selectors="2" />
+    <SDGCard Title="SDG Goal 7" Description="Description of SDG Goal 7" Selectors="2" />
+    <SDGCard Title="SDG Goal 8" Description="Description of SDG Goal 8" Selectors="2" />
+    <SDGCard Title="SDG Goal 9" Description="Description of SDG Goal 9" Selectors="2" />
+    <SDGCard Title="SDG Goal 10" Description="Description of SDG Goal 10" Selectors="2" />
+    <SDGCard Title="SDG Goal 11" Description="Description of SDG Goal 11" Selectors="2" />
+    <SDGCard Title="SDG Goal 12" Description="Description of SDG Goal 12" Selectors="2" />
+    <SDGCard Title="SDG Goal 13" Description="Description of SDG Goal 13" Selectors="2" />
+    <SDGCard Title="SDG Goal 14" Description="Description of SDG Goal 14" Selectors="2" />
+    <SDGCard Title="SDG Goal 15" Description="Description of SDG Goal 15" Selectors="2" />
+    <SDGCard Title="SDG Goal 16" Description="Description of SDG Goal 16" Selectors="2" />
+    <SDGCard Title="SDG Goal 17" Description="Description of SDG Goal 17" Selectors="2" />
+</div>
+
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+        gap: 20px; /* Space between cards */
+        padding: 16px; /* Optional padding for the container */
+        justify-content: center; /* Center the items horizontally when fewer than 4 items in the row */
+    }
+
+    .SDGCard {
+        /* Optional: Add any specific styles for the SDGCard here */
+        border: 1px solid #ccc;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    text-align: center;
+}
+</style>
 
 @code {
 
