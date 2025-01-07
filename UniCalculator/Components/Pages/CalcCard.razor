@@ -4,10 +4,24 @@
     <div class="card-body">
         <h5 class="card-title card-title-underline">@Title</h5>
         <div class="d-flex flex-column justify-content-between">
-            @for (int j = 1; j <= IndexesType1; j++)
+            @if(IndexesType0 == 1){
+                <div class="d-flex flex-row align-items-center" style="gap: 10px; margin: 10px; margin-bottom: 15px;">
+                    <p style="margin: 0; display: flex; align-items: center; height: 100%; margin-left: -10px;">@($"Index:{IndexesArray[0]}:")</p>
+                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1">
+                    <button class="btn btn-secondary" style="z-index: 0; font-size: 10px;">Save</button>
+                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2">
+                    <button class="btn btn-secondary" style="z-index: 0; font-size: 10px;">Save</button>
+                </div>
+                li = 1;
+            }
+            @for (int j= 1; j <= IndexesType1 ; j++)
             {
                 <div class="d-flex flex-row align-items-center" style="gap: 10px;">
-                    <p style="width: 55px">@($"Index {IndexesArray[k]}:")</p>
+                    @if(li==0){
+                        <p style="width: 55px">@($"Index:{IndexesArray[j - 1]}")</p>
+                    }else{
+                        <p style="width: 55px">@($"Index:{IndexesArray[li]}")</p>
+                    }
                     <select class="form-select form-select-sm mb-3" style="width: 90px;">
                         <option selected disabled>@($"Value 1")</option>
                         <option>0</option>
@@ -24,12 +38,19 @@
                         </select>
                     }
                 </div>
-                k++;
+                if((j==IndexesType1) && ((j-1)<IndexesArray.Length)){
+                    li = j - 1;
+                }
             }
             @for (int j = 1; j <= IndexesType2; j++)
             {
                 <div class="d-flex flex-row align-items-center" style="gap: 10px;">
-                    <p style="width: 55px">@($"Index {IndexesArray[k]}:")</p>
+                    @if (li == 0){
+                        <p style="width: 55px">@($"Index:{IndexesArray[j - 1]}")</p>
+                    }
+                    else{
+                        <p style="width: 55px">@($"Index:{IndexesArray[li]}")</p>
+                    }
                     @for (int i = 1; i <= 3; i++)
                     {
                         <select class="form-select form-select-sm mb-3" style="width: 90px;">
@@ -39,9 +60,8 @@
                         </select>
                     }
                 </div>
-                k++;
-                if(j == IndexesType2){
-                    k = 0;
+                if(li<IndexesArray.Length){
+                    li++;
                 }
             }
 
@@ -49,8 +69,8 @@
                 <button class="btn btn-primary" style="z-index: 0;" @onclick="Calculate">Calculate</button>
 
                 <button class="btn p-0"
-                        style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
-                        @onclick="TogglePopup">
+                style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
+                @onclick="TogglePopup">
                     <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
                 </button>
             </div>
@@ -83,23 +103,32 @@
     [Parameter]
     public string Title { get; set; }
 
-    //Type 2 indexes have 2 values, 0 and 1
+    /*Type 0 indexes have 2 text boxes that the user inputs values, 
+     only one per card, when it comes to the index, it will be the first element of
+     the Indexes Array.
+    */
     [Parameter]
-    public int IndexesType2 { get; set; }
+    public int IndexesType0 { get; set; }
 
     //Type 1 indexes have 2 values, 0, 0.25 and 1
     [Parameter]
     public int IndexesType1 { get; set; }
 
+    //Type 2 indexes have 2 values, 0 and 1
+    [Parameter]
+    public int IndexesType2 { get; set; }    
+
     [Parameter]
     public int[] IndexesArray { get; set;}
 
+
     private bool isPopupVisible;
 
-    public int k { get; set; } = 0;
+    private int li = 0;
 
     private void TogglePopup()
     {
+        //Console.WriteLine($"k: {k}, IndexesArray length: {IndexesArray?.Length}");
         isPopupVisible = !isPopupVisible;
     }
     private void Calculate(MouseEventArgs e)
