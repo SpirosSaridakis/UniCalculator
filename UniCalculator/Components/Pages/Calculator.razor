@@ -4,17 +4,30 @@
 <title>Calculator</title>
 
 <div class="grid-container">
-    <CalcCard Title="SDG Goal 1 : No Poverty" IndexesType0= "1" IndexesType1 = "1" IndexesType2= "0" IndexesArray= "@indexes1"/>
-    <CalcCard Title="SDG Goal 3 :  Good Health and Well-Being" IndexesType0= "0" IndexesType1 = "1" IndexesType2= "1" IndexesArray= "@indexes3"/>
-    <CalcCard Title="SDG Goal 3 :  Good Health and Well-Being" IndexesType0= "0" IndexesType1 = "1" IndexesType2= "1" IndexesArray= "@indexes4"/>
-    
+    <CalcCard Title="SDG Goal 1 : No Poverty" CardID="1" HasInput="0" />
+    <CalcCard Title="SDG Goal 2 : Zero Hunger" CardID="2" HasInput="3" />
+    <CalcCard Title="SDG Goal 3 : Good Health and Well-Being" CardID="3" HasInput="0" />
+    <CalcCard Title="SDG Goal 4 : Quality Education" CardID="4" HasInput="8" />
+    <CalcCard Title="SDG Goal 5 : Gender Equality" CardID="5" HasInput="9" />
+    <CalcCard Title="SDG Goal 6 : Clean Water and Sanitation" CardID="6" HasInput="13" />
+    <CalcCard Title="SDG Goal 7 : Affordable and Clean Energy" CardID="7" HasInput="17" />
+    <CalcCard Title="SDG Goal 9 : Industry, Innovation, and Infrastructure" CardID="9" HasInput="18" />
+    <CalcCard Title="SDG Goal 10 : Reduced Inequalities" CardID="10" HasInput="0" />
+    <CalcCard Title="SDG Goal 11 : Sustainable Cities and Communities" CardID="11" HasInput="0" />
+    <CalcCard Title="SDG Goal 12 : Responsible Consumption and Production" CardID="12" HasInput="24" />
+    <CalcCard Title="SDG Goal 13 : Climate Action" CardID="13" HasInput="25" />
+    <CalcCard Title="SDG Goal 14 : Life Below Water" CardID="14" HasInput="0" />
+    <CalcCard Title="SDG Goal 15 : Life on Land" CardID="15" HasInput="0" />
+    <CalcCard Title="SDG Goal 16 : Peace, Justice, and Strong Institutions" CardID="16" HasInput="0" />
+    <CalcCard Title="SDG Goal 17 : Partnerships for the Goals" CardID="17" HasInput="30" />
+
 </div>
 
 
 @code {
-    private int[] indexes1 = new int[] {1, 2};
-    private int[] indexes3 = new int[] {5, 6};
-    private int[] indexes4 = new int[] {7, 8};
+    private int[] indexes1 = new int[] { 1, 2 };
+    private int[] indexes3 = new int[] { 5, 6 };
+    private int[] indexes4 = new int[] { 7, 8 };
 }
 
 <style>
