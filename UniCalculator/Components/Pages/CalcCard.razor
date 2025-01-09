@@ -9,9 +9,8 @@
                 <div class="d-flex flex-row align-items-center" style="gap: 10px; margin: 10px; margin-bottom: 15px;">
                     <p style="margin: 0; display: flex; align-items: center; margin-left: -10px;">@($"Index:{HasInput}")</p>
                     <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1">
-                    <button class="btn btn-secondary" style="font-size: 10px;">Save</button>
                     <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2">
-                    <button class="btn btn-secondary" style="font-size: 10px;">Save</button>
+                    <button class="btn btn-secondary" style="font-size: 12px; width:100px;">Save</button>
                 </div>
             }
             @foreach (var type1 in type1Indexes)
@@ -149,4 +148,16 @@
         text-decoration: underline;
         margin-bottom: 10px;
     }
+
+    .card input,
+    .card select {
+        margin: 0; /* Remove any default margins */
+        padding: 0; /* Ensure no extra padding */
+        box-sizing: border-box; /* Consistent sizing for all elements */
+    }
+
+    .card input {
+        margin-left: 0; /* Reset specific margins, if any */
+    }
+
 </style>

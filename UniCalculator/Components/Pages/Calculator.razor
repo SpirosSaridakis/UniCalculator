@@ -35,15 +35,19 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
         gap: 20px; /* Space between cards */
-        padding: 8px; /* Optional padding for the container */
-        justify-content: center; /* Center the items horizontally when fewer than 4 items in the row */
+        padding: 8px;
+        justify-content: center; /* Center the items horizontally */
+        align-items: start; /* Ensure each card is sized independently */
     }
 
-    .SDGCard {
-        /* Optional: Add any specific styles for the SDGCard here */
+    .card {
+        display: flex;
+        flex-direction: column; /* Stack content vertically */
         border: 1px solid #ccc;
-        padding: 16px;
+        padding: 16px; /* Equal space on all sides */
         border-radius: 8px;
-        text-align: center; /* Center text inside the SDGCard */
+        text-align: center; /* Center text inside */
+        box-sizing: border-box; /* Include padding in the total width/height */
+        width: 100%; /* Ensure the card uses the full available space */
     }
 </style>
