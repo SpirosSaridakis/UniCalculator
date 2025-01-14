@@ -19,9 +19,16 @@
                 {
                     foreach (var value in type1.Value)
                     {
+                        IndexType1 index = new IndexType1();
+                        var result = t1.FirstOrDefault(o => o.id == value);
+                        if (result == null){
+                            index.id = value;
+                        }else{
+                            index = result;
+                        }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
-                            <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[0]">
                                 <option selected disabled>@($"Value 1")</option>
                                 <option>0</option>
                                 <option>0.25</option>
@@ -30,13 +37,17 @@
 
                             @for (int i = 2; i <= 3; i++)
                             {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                                <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[i-1]">
                                     <option selected disabled>@($"Value {i}")</option>
                                     <option>0</option>
                                     <option>1</option>
                                 </select>
                             }
                         </div>
+                        if (!t1.Any(o => o.id == value))
+                        {
+                            t1.Add(index);
+                        }
                     }
                 }
             }
@@ -47,17 +58,31 @@
                 {
                     foreach (var value in type2.Value)
                     {
+                        IndexType2 index = new IndexType2();
+                        var result = t2.FirstOrDefault(o => o.id == value);
+                        if (result == null)
+                        {
+                            index.id = value;
+                        }
+                        else
+                        {
+                            index = result;
+                        }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
                             @for (int i = 1; i <= 3; i++)
                             {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;">
+                                <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[i-1]">
                                     <option selected disabled>@($"Value {i}")</option>
                                     <option>0</option>
                                     <option>1</option>
                                 </select>
                             }
                         </div>
+                        if (!t2.Any(o => o.id == value)){
+                            t2.Add(index);
+                        }
+                        
                     }
                 }
             }
@@ -66,8 +91,8 @@
                 <button class="btn btn-primary" style="z-index: 0;" @onclick="Calculate">Calculate</button>
 
                 <button class="btn p-0"
-                        style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
-                        @onclick="TogglePopup">
+                style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
+                @onclick="TogglePopup">
                     <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
                 </button>
             </div>
@@ -96,6 +121,28 @@
 }
 
 @code {
+
+    public class IndexType1{
+        public int id { get; set; }
+        public List<int> values { get; set; } = new List<int> { 0, 0, 0 };
+    }
+
+    public class IndexType2{
+        public int id { get; set; }
+        public List<int> values { get; set; } = new List<int> { 0, 0, 0 };
+    }
+
+    public class IndexType3{
+        public int id { get; set; }
+        public int val1 { get; set; }
+        public int val2 { get; set; }
+    }
+
+    public List<IndexType1> t1 = new List<IndexType1>();
+    public List<IndexType2> t2 = new List<IndexType2>();
+    public List<IndexType3> t3 = new List<IndexType3>();
+
+
     [Parameter]
     public string Title { get; set; }
 
@@ -139,7 +186,17 @@
     }
     private void Calculate(MouseEventArgs e)
     {
-        Console.WriteLine("calculate pressed");
+        for (int i = 0; i < t1.Count; i++)
+        {
+            Console.WriteLine($"Id: {t1[i].id}, Values: {string.Join(", ", t1[i].values)}");
+        }
+
+        Console.WriteLine("\nIndexType2 List:");
+        for (int i = 0; i < t2.Count; i++)
+        {
+            Console.WriteLine($"Id: {t2[i].id}, Values: {string.Join(", ", t2[i].values)}");
+        }
+
     }
 }
 
