@@ -44,9 +44,9 @@
                                 </select>
                             }
                         </div>
-                        if (!t1.Any(o => o.id == value))
+                        if (!(result != null && result.values[0] == 0 && result.values[1] == 0 && result.values[2] == 0))
                         {
-                            t1.Add(index);
+                            t1.Add(index);// add to the list only if all the values are saved. Currently not working.
                         }
                     }
                 }
