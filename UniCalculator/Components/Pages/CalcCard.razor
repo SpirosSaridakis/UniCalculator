@@ -23,8 +23,9 @@
                         var result = t1.FirstOrDefault(o => o.id == value);
                         if (result == null){
                             index.id = value;
+                            index.values = new List<float> { 0, 0, 0 };
                         }else{
-                            index = result;
+                            index = (IndexType1)result;
                         }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
@@ -44,9 +45,12 @@
                                 </select>
                             }
                         </div>
-                        if (!(result != null && result.values[0] == 0 && result.values[1] == 0 && result.values[2] == 0))
+                        if (result == null && index.values[0] == 0 && index.values[1] == 0 && index.values[2] == 0)
                         {
-                            t1.Add(index);// add to the list only if all the values are saved. Currently not working.
+                            lock (t1) // Ensure thread safety
+                            {
+                                t1.Add(index);
+                            }
                         }
                     }
                 }
@@ -63,10 +67,11 @@
                         if (result == null)
                         {
                             index.id = value;
+                            index.values = new List<float> { 0, 0, 0 };
                         }
                         else
                         {
-                            index = result;
+                            index = (IndexType2)result;
                         }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
@@ -79,10 +84,14 @@
                                 </select>
                             }
                         </div>
-                        if (!t2.Any(o => o.id == value)){
-                            t2.Add(index);
+                        if (result == null && index.values[0] == 0 && index.values[1] == 0 && index.values[2] == 0)
+                        {
+                            lock (t2) // Ensure thread safety
+                            {
+                                t2.Add(index);
+                            }
                         }
-                        
+
                     }
                 }
             }
@@ -124,12 +133,12 @@
 
     public class IndexType1{
         public int id { get; set; }
-        public List<int> values { get; set; } = new List<int> { 0, 0, 0 };
+        public List<float> values { get; set; } 
     }
 
     public class IndexType2{
         public int id { get; set; }
-        public List<int> values { get; set; } = new List<int> { 0, 0, 0 };
+        public List<float> values { get; set; }
     }
 
     public class IndexType3{
@@ -141,7 +150,6 @@
     public List<IndexType1> t1 = new List<IndexType1>();
     public List<IndexType2> t2 = new List<IndexType2>();
     public List<IndexType3> t3 = new List<IndexType3>();
-
 
     [Parameter]
     public string Title { get; set; }
