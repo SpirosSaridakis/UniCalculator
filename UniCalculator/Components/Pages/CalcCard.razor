@@ -23,29 +23,26 @@
                         var result = t1.FirstOrDefault(o => o.id == value);
                         if (result == null){
                             index.id = value;
-                            index.values = new List<float> { 0, 0, 0 };
                         }else{
                             index = (IndexType1)result;
                         }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
-                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[0]">
-                                <option selected disabled>@($"Value 1")</option>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[0]">
                                 <option>0</option>
                                 <option>0.25</option>
                                 <option>1</option>
                             </select>
-
-                            @for (int i = 2; i <= 3; i++)
-                            {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[i-1]">
-                                    <option selected disabled>@($"Value {i}")</option>
-                                    <option>0</option>
-                                    <option>1</option>
-                                </select>
-                            }
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[1]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[2]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
                         </div>
-                        if (result == null && index.values[0] == 0 && index.values[1] == 0 && index.values[2] == 0)
+                        if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
                         {
                             lock (t1) // Ensure thread safety
                             {
@@ -67,7 +64,6 @@
                         if (result == null)
                         {
                             index.id = value;
-                            index.values = new List<float> { 0, 0, 0 };
                         }
                         else
                         {
@@ -75,16 +71,20 @@
                         }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
-                            @for (int i = 1; i <= 3; i++)
-                            {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.values[i-1]">
-                                    <option selected disabled>@($"Value {i}")</option>
-                                    <option>0</option>
-                                    <option>1</option>
-                                </select>
-                            }
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[0]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[1]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[2]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
                         </div>
-                        if (result == null && index.values[0] == 0 && index.values[1] == 0 && index.values[2] == 0)
+                        if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
                         {
                             lock (t2) // Ensure thread safety
                             {
@@ -133,11 +133,23 @@
 
     public class IndexType1{
         public int id { get; set; }
+        public Dictionary<int, float> keyValues = new Dictionary<int, float>
+        {
+            { 0, 0 },
+            { 1, 0 },
+            { 2, 0 }
+        };
         public List<float> values { get; set; } 
     }
 
     public class IndexType2{
         public int id { get; set; }
+        public Dictionary<int, float> keyValues = new Dictionary<int, float>
+        {
+            { 0, 0 },
+            { 1, 0 },
+            { 2, 0 }
+        };
         public List<float> values { get; set; }
     }
 
@@ -194,18 +206,19 @@
     }
     private void Calculate(MouseEventArgs e)
     {
+        Console.WriteLine("IndexType1 List:");
         for (int i = 0; i < t1.Count; i++)
         {
-            Console.WriteLine($"Id: {t1[i].id}, Values: {string.Join(", ", t1[i].values)}");
+            Console.WriteLine($"Id: {t1[i].id}, KeyValues: {string.Join(", ", t1[i].keyValues.Select(kv => $"[{kv.Key}: {kv.Value}]"))}");
         }
 
         Console.WriteLine("\nIndexType2 List:");
         for (int i = 0; i < t2.Count; i++)
         {
-            Console.WriteLine($"Id: {t2[i].id}, Values: {string.Join(", ", t2[i].values)}");
+            Console.WriteLine($"Id: {t2[i].id}, KeyValues: {string.Join(", ", t2[i].keyValues.Select(kv => $"[{kv.Key}: {kv.Value}]"))}");
         }
-
     }
+
 }
 
 <style>
