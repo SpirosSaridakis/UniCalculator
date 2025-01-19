@@ -6,11 +6,24 @@
         <div class="d-flex flex-column justify-content-between">
             @if (HasInput != 0)
             {
+                IndexType3 index = new IndexType3();
+                var result = t3.FirstOrDefault(o => o.id == HasInput);
+                if (result == null)
+                {
+                    index.id = HasInput;
+                }
+                else
+                {
+                    index = (IndexType3)result;
+                }
                 <div class="d-flex flex-row align-items-center" style="gap: 10px; margin: 10px; margin-bottom: 15px;">
                     <p style="margin: 0; display: flex; align-items: center; margin-left: -10px;">@($"Index:{HasInput}")</p>
-                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1">
-                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2">
-                    <button class="btn btn-secondary" style="font-size: 12px; width:100px;">Save</button>
+                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1" @bind = "index.val1" disabled = "@isDisabled1">
+                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2" @bind = "index.val2" disabled = "@isDisabled2">
+                    <button class="btn btn-secondary" style="font-size: 12px; width:100px;" @onclick="saveValues">Save</button>
+                    @if(result == null && index.val1 == 0 && index.val2 == 0){
+                        t3.Add(index);
+                    }
                 </div>
             }
             @foreach (var type1 in type1Indexes)
@@ -43,11 +56,8 @@
                             </select>
                         </div>
                         if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
-                        {
-                            lock (t1) // Ensure thread safety
-                            {
-                                t1.Add(index);
-                            }
+                        { 
+                            t1.Add(index);
                         }
                     }
                 }
@@ -86,10 +96,7 @@
                         </div>
                         if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
                         {
-                            lock (t2) // Ensure thread safety
-                            {
-                                t2.Add(index);
-                            }
+                            t2.Add(index);  
                         }
 
                     }
@@ -139,7 +146,7 @@
             { 1, 0 },
             { 2, 0 }
         };
-        public List<float> values { get; set; } 
+
     }
 
     public class IndexType2{
@@ -150,13 +157,13 @@
             { 1, 0 },
             { 2, 0 }
         };
-        public List<float> values { get; set; }
+
     }
 
     public class IndexType3{
         public int id { get; set; }
-        public int val1 { get; set; }
-        public int val2 { get; set; }
+        public int val1 { get; set; } = 0;
+        public int val2 { get; set; } = 0;
     }
 
     public List<IndexType1> t1 = new List<IndexType1>();
@@ -198,6 +205,8 @@
     };
 
     private bool isPopupVisible;
+    private bool isDisabled1;
+    private bool isDisabled2;
 
 
     private void TogglePopup()
@@ -217,8 +226,17 @@
         {
             Console.WriteLine($"Id: {t2[i].id}, KeyValues: {string.Join(", ", t2[i].keyValues.Select(kv => $"[{kv.Key}: {kv.Value}]"))}");
         }
+        Console.WriteLine("\nIndexType3 List:");
+        for (int i = 0; i < t3.Count; i++)
+        {
+            Console.WriteLine($"Id: {t3[i].id}, Values: {t3[i].val1} and {t3[i].val2}");
+        }
     }
-
+    private void saveValues(MouseEventArgs e)
+    {
+        isDisabled1 = true;
+        isDisabled2 = true;
+    }
 }
 
 <style>
