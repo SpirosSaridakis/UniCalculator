@@ -204,6 +204,44 @@
         {17, new List<int> {33, 34}}
     };
 
+    public Dictionary<int, double> weights = new Dictionary<int, double>
+    {
+        {1,0.784},
+        {2,0.216},
+        {3,0.58},
+        {4,0.42},
+        {5,0.663},
+        {6,0.337},
+        {7,0.701},
+        {8,0.299},
+        {9,0.193},
+        {10,0.257},
+        {11,0.427},
+        {12,0.123},
+        {13,0.552},
+        {14,0.448},
+        {15,0.58},
+        {16,0.264},
+        {17,0.176},
+        {18,1},
+        {19,1},
+        {20,0.465},
+        {21,0.535},
+        {22,0.291},
+        {23,0.442},
+        {24,0.266},
+        {25,0.589},
+        {26,0.441},
+        {27,1},
+        {28,1},
+        {29,1},
+        {30,0.241},
+        {31,0.322},
+        {32,0.18},
+        {33,0.114},
+        {34,0.143}
+    };
+
     private bool isPopupVisible;
     private bool isDisabled1;
     private bool isDisabled2;
@@ -215,22 +253,31 @@
     }
     private void Calculate(MouseEventArgs e)
     {
-        Console.WriteLine("IndexType1 List:");
-        for (int i = 0; i < t1.Count; i++)
-        {
-            Console.WriteLine($"Id: {t1[i].id}, KeyValues: {string.Join(", ", t1[i].keyValues.Select(kv => $"[{kv.Key}: {kv.Value}]"))}");
+        foreach(IndexType1 index in t1){
+
+            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            Console.WriteLine("Value for index type 1 = " + val);
         }
 
-        Console.WriteLine("\nIndexType2 List:");
-        for (int i = 0; i < t2.Count; i++)
+        foreach (IndexType2 index in t2)
         {
-            Console.WriteLine($"Id: {t2[i].id}, KeyValues: {string.Join(", ", t2[i].keyValues.Select(kv => $"[{kv.Key}: {kv.Value}]"))}");
+            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            Console.WriteLine("Value for index type 2 = " + val);
         }
-        Console.WriteLine("\nIndexType3 List:");
-        for (int i = 0; i < t3.Count; i++)
-        {
-            Console.WriteLine($"Id: {t3[i].id}, Values: {t3[i].val1} and {t3[i].val2}");
+
+        foreach(IndexType3 index in t3){
+            if(index.val1 != 0){
+                var val = index.val2 / index.val1;
+                if (val < 1 && val > 0){
+                    var res = (1/val) * weights[index.id];
+                    Console.WriteLine("Value for index type 3 = " + res);
+                }else{
+                    var res = 0;
+                    Console.WriteLine("Value for index type 3 = " + res);
+                }
+            }
         }
+
     }
     private void saveValues(MouseEventArgs e)
     {
