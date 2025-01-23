@@ -6,11 +6,24 @@
         <div class="d-flex flex-column justify-content-between">
             @if (HasInput != 0)
             {
+                IndexType3 index = new IndexType3();
+                var result = t3.FirstOrDefault(o => o.id == HasInput);
+                if (result == null)
+                {
+                    index.id = HasInput;
+                }
+                else
+                {
+                    index = (IndexType3)result;
+                }
                 <div class="d-flex flex-row align-items-center" style="gap: 10px; margin: 10px; margin-bottom: 15px;">
                     <p style="margin: 0; display: flex; align-items: center; margin-left: -10px;">@($"Index:{HasInput}")</p>
-                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1">
-                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2">
-                    <button class="btn btn-secondary" style="font-size: 12px; width:100px;">Save</button>
+                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" step="0.1" placeholder="Value 1" @bind = "index.val1" disabled = "@isDisabled1">
+                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" step="0.1" placeholder="Value 2" @bind="index.val2" disabled="@isDisabled2">
+                    <button class="btn btn-secondary" style="font-size: 12px; width:100px;" @onclick="saveValues">Save</button>
+                    @if(result == null && index.val1 == 0 && index.val2 == 0){
+                        t3.Add(index);
+                    }
                 </div>
             }
             @foreach (var type1 in type1Indexes)
@@ -19,24 +32,33 @@
                 {
                     foreach (var value in type1.Value)
                     {
+                        IndexType1 index = new IndexType1();
+                        var result = t1.FirstOrDefault(o => o.id == value);
+                        if (result == null){
+                            index.id = value;
+                        }else{
+                            index = (IndexType1)result;
+                        }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
-                            <select class="form-select form-select-sm mb-3" style="width: 90px;">
-                                <option selected disabled>@($"Value 1")</option>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[0]">
                                 <option>0</option>
                                 <option>0.25</option>
                                 <option>1</option>
                             </select>
-
-                            @for (int i = 2; i <= 3; i++)
-                            {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;">
-                                    <option selected disabled>@($"Value {i}")</option>
-                                    <option>0</option>
-                                    <option>1</option>
-                                </select>
-                            }
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[1]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[2]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
                         </div>
+                        if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
+                        { 
+                            t1.Add(index);
+                        }
                     }
                 }
             }
@@ -47,17 +69,36 @@
                 {
                     foreach (var value in type2.Value)
                     {
+                        IndexType2 index = new IndexType2();
+                        var result = t2.FirstOrDefault(o => o.id == value);
+                        if (result == null)
+                        {
+                            index.id = value;
+                        }
+                        else
+                        {
+                            index = (IndexType2)result;
+                        }
                         <div class="d-flex flex-row align-items-center" style="gap: 10px;">
                             <p style="width: 60px">@($"Index:{value}")</p>
-                            @for (int i = 1; i <= 3; i++)
-                            {
-                                <select class="form-select form-select-sm mb-3" style="width: 90px;">
-                                    <option selected disabled>@($"Value {i}")</option>
-                                    <option>0</option>
-                                    <option>1</option>
-                                </select>
-                            }
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[0]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[1]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                            <select class="form-select form-select-sm mb-3" style="width: 90px;" @bind="index.keyValues[2]">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
                         </div>
+                        if (result == null && index.keyValues[0] == 0 && index.keyValues[1] == 0 && index.keyValues[2] == 0)
+                        {
+                            t2.Add(index);  
+                        }
+
                     }
                 }
             }
@@ -66,8 +107,8 @@
                 <button class="btn btn-primary" style="z-index: 0;" @onclick="Calculate">Calculate</button>
 
                 <button class="btn p-0"
-                        style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
-                        @onclick="TogglePopup">
+                style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
+                @onclick="Calculate">
                     <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
                 </button>
             </div>
@@ -81,11 +122,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">More Info</h5>
+                    <h5 class="modal-title">Calculated Information</h5>
                     <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
                 </div>
                 <div class="modal-body">
-                    <p>This popup contains more details about @Title.</p>
+                    <p>This popup contains the calculated values based on the provided indexes and weights:</p>
+                    <ul>
+                        @foreach (var value in CalculatedValues)
+                        {
+                            <li>@value</li>
+                        }
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
@@ -95,7 +142,41 @@
     </div>
 }
 
+
 @code {
+
+    public class IndexType1{
+        public int id { get; set; }
+        public Dictionary<int, float> keyValues = new Dictionary<int, float>
+        {
+            { 0, 0 },
+            { 1, 0 },
+            { 2, 0 }
+        };
+
+    }
+
+    public class IndexType2{
+        public int id { get; set; }
+        public Dictionary<int, float> keyValues = new Dictionary<int, float>
+        {
+            { 0, 0 },
+            { 1, 0 },
+            { 2, 0 }
+        };
+
+    }
+
+    public class IndexType3{
+        public int id { get; set; }
+        public double val1 { get; set; } = 0;
+        public double val2 { get; set; } = 0;
+    }
+
+    public List<IndexType1> t1 = new List<IndexType1>();
+    public List<IndexType2> t2 = new List<IndexType2>();
+    public List<IndexType3> t3 = new List<IndexType3>();
+
     [Parameter]
     public string Title { get; set; }
 
@@ -130,16 +211,88 @@
         {17, new List<int> {33, 34}}
     };
 
+    public Dictionary<int, double> weights = new Dictionary<int, double>
+    {
+        {1,0.784},
+        {2,0.216},
+        {3,0.58},
+        {4,0.42},
+        {5,0.663},
+        {6,0.337},
+        {7,0.701},
+        {8,0.299},
+        {9,0.193},
+        {10,0.257},
+        {11,0.427},
+        {12,0.123},
+        {13,0.552},
+        {14,0.448},
+        {15,0.58},
+        {16,0.264},
+        {17,0.176},
+        {18,1},
+        {19,1},
+        {20,0.465},
+        {21,0.535},
+        {22,0.291},
+        {23,0.442},
+        {24,0.266},
+        {25,0.589},
+        {26,0.441},
+        {27,1},
+        {28,1},
+        {29,1},
+        {30,0.241},
+        {31,0.322},
+        {32,0.18},
+        {33,0.114},
+        {34,0.143}
+    };
+
     private bool isPopupVisible;
+    private bool isDisabled1;
+    private bool isDisabled2;
 
 
     private void TogglePopup()
     {
         isPopupVisible = !isPopupVisible;
     }
+
+    private List<string> CalculatedValues { get; set; } = new List<string>();
+
     private void Calculate(MouseEventArgs e)
     {
-        Console.WriteLine("calculate pressed");
+        CalculatedValues.Clear();
+
+        foreach(IndexType1 index in t1){
+
+            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            CalculatedValues.Add($"Value for index type 1 = {val}");
+        }
+
+        foreach (IndexType2 index in t2)
+        {
+            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            CalculatedValues.Add($"Value for index type 2 = {val}");
+        }
+
+        foreach(IndexType3 index in t3){
+            if(index.val1 != 0){
+                double val = index.val2 / index.val1;
+                double res = 0;
+                if (val < 1 && val > 0){
+                    res = (1/val) * weights[index.id];
+                }
+                CalculatedValues.Add($"Value for index type 3 = {res}");
+            }
+        }
+        TogglePopup();
+    }
+    private void saveValues(MouseEventArgs e)
+    {
+        isDisabled1 = true;
+        isDisabled2 = true;
     }
 }
 
