@@ -18,8 +18,8 @@
                 }
                 <div class="d-flex flex-row align-items-center" style="gap: 10px; margin: 10px; margin-bottom: 15px;">
                     <p style="margin: 0; display: flex; align-items: center; margin-left: -10px;">@($"Index:{HasInput}")</p>
-                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" placeholder="Value 1" @bind = "index.val1" disabled = "@isDisabled1">
-                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" placeholder="Value 2" @bind = "index.val2" disabled = "@isDisabled2">
+                    <input type="number" name="b1" style="width: 83px; border-radius: 10px;" step="0.1" placeholder="Value 1" @bind = "index.val1" disabled = "@isDisabled1">
+                    <input type="number" name="b2" style="width: 83px; border-radius: 10px;" step="0.1" placeholder="Value 2" @bind="index.val2" disabled="@isDisabled2">
                     <button class="btn btn-secondary" style="font-size: 12px; width:100px;" @onclick="saveValues">Save</button>
                     @if(result == null && index.val1 == 0 && index.val2 == 0){
                         t3.Add(index);
@@ -108,7 +108,7 @@
 
                 <button class="btn p-0"
                 style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
-                @onclick="TogglePopup">
+                @onclick="Calculate">
                     <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
                 </button>
             </div>
@@ -122,11 +122,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">More Info</h5>
+                    <h5 class="modal-title">Calculated Information</h5>
                     <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
                 </div>
                 <div class="modal-body">
-                    <p>This popup contains more details about @Title.</p>
+                    <p>This popup contains the calculated values based on the provided indexes and weights:</p>
+                    <ul>
+                        @foreach (var value in CalculatedValues)
+                        {
+                            <li>@value</li>
+                        }
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
@@ -135,6 +141,7 @@
         </div>
     </div>
 }
+
 
 @code {
 
@@ -162,8 +169,8 @@
 
     public class IndexType3{
         public int id { get; set; }
-        public int val1 { get; set; } = 0;
-        public int val2 { get; set; } = 0;
+        public double val1 { get; set; } = 0;
+        public double val2 { get; set; } = 0;
     }
 
     public List<IndexType1> t1 = new List<IndexType1>();
@@ -251,33 +258,36 @@
     {
         isPopupVisible = !isPopupVisible;
     }
+
+    private List<string> CalculatedValues { get; set; } = new List<string>();
+
     private void Calculate(MouseEventArgs e)
     {
+        CalculatedValues.Clear();
+
         foreach(IndexType1 index in t1){
 
             var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
-            Console.WriteLine("Value for index type 1 = " + val);
+            CalculatedValues.Add($"Value for index type 1 = {val}");
         }
 
         foreach (IndexType2 index in t2)
         {
             var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
-            Console.WriteLine("Value for index type 2 = " + val);
+            CalculatedValues.Add($"Value for index type 2 = {val}");
         }
 
         foreach(IndexType3 index in t3){
             if(index.val1 != 0){
-                var val = index.val2 / index.val1;
+                double val = index.val2 / index.val1;
+                double res = 0;
                 if (val < 1 && val > 0){
-                    var res = (1/val) * weights[index.id];
-                    Console.WriteLine("Value for index type 3 = " + res);
-                }else{
-                    var res = 0;
-                    Console.WriteLine("Value for index type 3 = " + res);
+                    res = (1/val) * weights[index.id];
                 }
+                CalculatedValues.Add($"Value for index type 3 = {res}");
             }
         }
-
+        TogglePopup();
     }
     private void saveValues(MouseEventArgs e)
     {
