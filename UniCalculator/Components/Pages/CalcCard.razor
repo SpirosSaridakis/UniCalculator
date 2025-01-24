@@ -1,4 +1,4 @@
-@inject NavigationManager NavigationManager
+
 
 <div class="card m-2 shadow-lg" style="width: 25rem;">
     <div class="card-body">
@@ -145,6 +145,9 @@
 
 @code {
 
+    [Parameter]
+    public EventCallback<Dictionary<int, double>> OnFinalIndexesCalculated { get; set; }
+
     public class IndexType1{
         public int id { get; set; }
         public Dictionary<int, float> keyValues = new Dictionary<int, float>
@@ -260,6 +263,7 @@
     }
 
     private List<string> CalculatedValues { get; set; } = new List<string>();
+    public Dictionary<int, double> FinalIndexes;
 
     private void Calculate(MouseEventArgs e)
     {
@@ -267,14 +271,16 @@
 
         foreach(IndexType1 index in t1){
 
-            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
             CalculatedValues.Add($"Value for index type 1 = {val}");
+            CheckForIndex(index.id, val);
         }
 
         foreach (IndexType2 index in t2)
         {
-            var val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
             CalculatedValues.Add($"Value for index type 2 = {val}");
+            CheckForIndex(index.id, val);
         }
 
         foreach(IndexType3 index in t3){
@@ -285,14 +291,32 @@
                     res = (1/val) * weights[index.id];
                 }
                 CalculatedValues.Add($"Value for index type 3 = {res}");
+                CheckForIndex(index.id, val);
             }
         }
+        CheckForIndexTransfer();
         TogglePopup();
     }
     private void saveValues(MouseEventArgs e)
     {
         isDisabled1 = true;
         isDisabled2 = true;
+    }
+
+    private void CheckForIndex(int id, double val){
+        if (!(FinalIndexes.ContainsKey(id)))
+        {
+            FinalIndexes.Add(id, val);
+        }
+        else
+        {
+            FinalIndexes[id] = val;
+        }
+    }
+    public void CheckForIndexTransfer(){
+        if(FinalIndexes.Count == 34){
+            OnFinalIndexesCalculated.InvokeAsync(FinalIndexes);
+        }
     }
 }
 
@@ -304,13 +328,13 @@
 
     .card input,
     .card select {
-        margin: 0; /* Remove any default margins */
-        padding: 0; /* Ensure no extra padding */
-        box-sizing: border-box; /* Consistent sizing for all elements */
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box;
     }
 
     .card input {
-        margin-left: 0; /* Reset specific margins, if any */
+        margin-left: 0;
     }
 
 </style>

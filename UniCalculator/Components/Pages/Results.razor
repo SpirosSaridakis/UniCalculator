@@ -1,0 +1,17 @@
+﻿@page "/results"
+@inject NavigationState State
+
+<title>Results</title>
+<h3>Results</h3>
+
+<div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+    @foreach (var kvp in State.SharedData)
+    {
+        <li>@kvp.Key: @kvp.Value</li>
+    }
+</div>
+
+
+@code {
+
+}
