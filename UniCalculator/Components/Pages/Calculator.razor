@@ -60,20 +60,59 @@
     </button>
 </div>
 
+@if (showErrorPopup)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Input Error
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" @onclick="TogglePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger fw-bold">Some required inputs for the calculation are missing. Please complete all fields before proceeding.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
     bool resultsReady = false;
-    private void ShowResults() // added this, there is a NavigationState class that is used for the redicrects
+    bool showErrorPopup = false;
+    private void ShowResults() 
     {
-        State.SharedData = ParentFinalIndexes;
-        Navigation.NavigateTo("/results");
+        if(resultsReady){
+            Console.WriteLine("parent = " + ParentFinalIndexes.Count);
+            foreach (var kvp in ParentFinalIndexes)
+            {
+                State.SharedData[kvp.Key] = kvp.Value;
+            }
+            Navigation.NavigateTo("/results");
+        }else{
+            TogglePopup();
+        }
+
     }
 
-    private Dictionary<int, double> ParentFinalIndexes = new();
+    private Dictionary<int, double> ParentFinalIndexes = new Dictionary<int, double>();
 
     private void HandleFinalIndexes(Dictionary<int, double> finalIndexesFromChild){
-        finalIndexesFromChild = ParentFinalIndexes;
+        foreach (var kvp in finalIndexesFromChild)
+        {
+            ParentFinalIndexes[kvp.Key] = kvp.Value;
+        }
         resultsReady = true;
         
+    }
+    private void TogglePopup()
+    {
+        showErrorPopup = !showErrorPopup;
     }
 }
 

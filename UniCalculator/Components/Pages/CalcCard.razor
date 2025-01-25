@@ -263,7 +263,7 @@
     }
 
     private List<string> CalculatedValues { get; set; } = new List<string>();
-    public Dictionary<int, double> FinalIndexes;
+    public static Dictionary<int, double> FinalIndexes = new Dictionary<int, double>();
 
     private void Calculate(MouseEventArgs e)
     {
@@ -314,6 +314,7 @@
         }
     }
     public void CheckForIndexTransfer(){
+        Console.WriteLine("CheckForIndexTransfer called, total indexes:" + FinalIndexes.Count);
         if(FinalIndexes.Count == 34){
             OnFinalIndexesCalculated.InvokeAsync(FinalIndexes);
         }

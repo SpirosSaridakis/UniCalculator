@@ -5,13 +5,17 @@
 <h3>Results</h3>
 
 <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-    @foreach (var kvp in State.SharedData)
-    {
-        <li>@kvp.Key: @kvp.Value</li>
-    }
+    <ul>
+        @foreach (var kvp in State.SharedData)
+        {
+            <li>@kvp.Key: @kvp.Value</li>
+        }
+    </ul>
 </div>
 
 
 @code {
+    
+    
 
 }
