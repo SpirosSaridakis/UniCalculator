@@ -6,16 +6,16 @@
 <h3 class="text-center mt-4">Results based on the given values </h3>
 
 <div class="container mt-4">
-    <div class="card shadow-sm">
+    <div class="card shadow-sm" style="max-width: 80%; margin: 0 auto;">
         <div class="card-body">
             <h5 class="card-title text-center">Index results</h5>
-            <table class="table table-striped table-hover text-center">
+            <table class="table table-striped table-hover" style="font-size: 0.9rem;">
                 <thead>
                     <tr>
-                        <th scope="col">Index</th>
-                        <th scope="col">Value</th>
-                        <th class="border-start" scope="col">Index</th>
-                        <th scope="col">Value</th>
+                        <th scope="col" class="text-start">Index</th>
+                        <th scope="col" class="text-start">Value</th>
+                        <th class="border-start text-start" scope="col">Index</th>
+                        <th scope="col" class="text-start">Value</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,8 +30,8 @@
                         for (int i = 0; i < halfCount; i++)
                         {
                             <tr>
-                                <td>@(i + 1)</td>
-                                <td>
+                                <td class="text-start">@(i + 1) </td>
+                                <td class="text-start">
                                     @{
                                         if (i < group1.Count)
                                         {
@@ -39,7 +39,7 @@
                                         }
                                     }
                                 </td>
-                                <td class="border-start">
+                                <td class="border-start text-start">
                                     @{
                                         if (i + halfCount + 1 <= sortedData.Count)
                                         {
@@ -47,7 +47,7 @@
                                         }
                                     }
                                 </td>
-                                <td>
+                                <td class="text-start">
                                     @{
                                         if (i < group2.Count)
                                         {
