@@ -272,13 +272,15 @@
         foreach(IndexType1 index in t1){
 
             double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            val = Math.Round(val,3);
             CalculatedValues.Add($"Value for index type 1 = {val}");
-            CheckForIndex(index.id, val);
+            CheckForIndex(index.id,val);
         }
 
         foreach (IndexType2 index in t2)
         {
             double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
+            val = Math.Round(val, 3);
             CalculatedValues.Add($"Value for index type 2 = {val}");
             CheckForIndex(index.id, val);
         }
@@ -290,8 +292,9 @@
                 if (val < 1 && val > 0){
                     res = (1/val) * weights[index.id];
                 }
+                res = Math.Round(res, 3);
                 CalculatedValues.Add($"Value for index type 3 = {res}");
-                CheckForIndex(index.id, val);
+                CheckForIndex(index.id,res);
             }
         }
         CheckForIndexTransfer();

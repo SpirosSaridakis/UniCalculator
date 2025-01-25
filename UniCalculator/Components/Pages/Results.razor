@@ -2,20 +2,68 @@
 @inject NavigationState State
 
 <title>Results</title>
-<h3>Results</h3>
 
-<div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-    <ul>
-        @foreach (var kvp in State.SharedData)
-        {
-            <li>@kvp.Key: @kvp.Value</li>
-        }
-    </ul>
+<h3 class="text-center mt-4">Results based on the given values </h3>
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center">Index results</h5>
+            <table class="table table-striped table-hover text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Value</th>
+                        <th class="border-start" scope="col">Index</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        // Convert SharedData to a SortedDictionary for automatic sorting by key
+                        var sortedData = new SortedDictionary<int, double>(State.SharedData);
+
+                        int halfCount = (int)Math.Ceiling(sortedData.Count / 2.0); // Divide data into two groups
+                        var group1 = sortedData.Take(halfCount).ToList();
+                        var group2 = sortedData.Skip(halfCount).ToList();
+
+                        for (int i = 0; i < halfCount; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>
+                                    @{
+                                        if (i < group1.Count)
+                                        {
+                                            @group1[i].Value
+                                        }
+                                    }
+                                </td>
+                                <td class="border-start">
+                                    @{
+                                        if (i + halfCount + 1 <= sortedData.Count)
+                                        {
+                                            @(i + halfCount + 1)
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        if (i < group2.Count)
+                                        {
+                                            @group2[i].Value
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
 
 @code {
     
-    
-
 }
