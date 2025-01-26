@@ -3,12 +3,13 @@
 
 <title>Results</title>
 
-<h3 class="text-center mt-4">Results based on the given values </h3>
+<h3 class="text-center mt-4">Index results based on the given values</h3>
 
 <div class="container mt-4">
     <div class="card shadow-sm" style="max-width: 80%; margin: 0 auto;">
         <div class="card-body">
             <h5 class="card-title text-center">Index results</h5>
+
             <table class="table table-striped table-hover" style="font-size: 0.9rem;">
                 <thead>
                     <tr>
@@ -30,7 +31,7 @@
                         for (int i = 0; i < halfCount; i++)
                         {
                             <tr>
-                                <td class="text-start">@(i + 1) </td>
+                                <td class="text-start">@(i + 1)</td>
                                 <td class="text-start">
                                     @{
                                         if (i < group1.Count)
@@ -64,6 +65,154 @@
     </div>
 </div>
 
+<p style="font-size: 1.1em; font-weight: 400; line-height: 1.6; color: #333; text-align: center; margin: 20px auto; max-width: 800px;">
+    The above index values were calculated by summing up the values you entered and multiplying them with the weight of each index. This ensures that each value is appropriately adjusted according to its assigned importance, resulting in an accurate and reliable outcome.
+</p>
+
+<h3 class="text-center mt-4">Total Values For Each Index</h3>
+
+<div class="container mt-4">
+    <div class="card shadow-sm" style="max-width: 80%; margin: 0 auto;">
+        <h3 class="text-center mt-3">SDGS</h3>
+
+        <table class="table table-striped table-hover" style="font-size: 0.9rem; text-align: center; margin: 0 auto;">
+            <thead>
+                <tr>
+                    <th>SDG</th>
+                    <th>Sum</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>SDG1</td><td>@CalculateSum(new List<int> { 1, 2 })</td></tr>
+                <tr><td>SDG2</td><td>@CalculateSum(new List<int> { 3, 4 })</td></tr>
+                <tr><td>SDG3</td><td>@CalculateSum(new List<int> { 5, 6 })</td></tr>
+                <tr><td>SDG4</td><td>@CalculateSum(new List<int> { 7, 8 })</td></tr>
+                <tr><td>SDG5</td><td>@CalculateSum(new List<int> { 9, 10, 11, 12 })</td></tr>
+                <tr><td>SDG6</td><td>@CalculateSum(new List<int> { 13, 14 })</td></tr>
+                <tr><td>SDG7</td><td>@CalculateSum(new List<int> { 15, 16, 17 })</td></tr>
+                <tr><td>SDG9</td><td>@CalculateSum(new List<int> { 18 })</td></tr>
+                <tr><td>SDG10</td><td>@CalculateSum(new List<int> { 19 })</td></tr>
+                <tr><td>SDG11</td><td>@CalculateSum(new List<int> { 20, 21 })</td></tr>
+                <tr><td>SDG12</td><td>@CalculateSum(new List<int> { 22, 23, 24 })</td></tr>
+                <tr><td>SDG13</td><td>@CalculateSum(new List<int> { 25, 26 })</td></tr>
+                <tr><td>SDG14</td><td>@CalculateSum(new List<int> { 27 })</td></tr>
+                <tr><td>SDG15</td><td>@CalculateSum(new List<int> { 28 })</td></tr>
+                <tr><td>SDG16</td><td>@CalculateSum(new List<int> { 29 })</td></tr>
+                <tr><td>SDG17</td><td>@CalculateSum(new List<int> { 30, 31, 32, 33, 34 })</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<h3 class="text-center mt-4" style="color: black;">Index Feedback</h3>
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0" style="max-width: 80%; margin: 0 auto; border-radius: 15px; background: linear-gradient(to right, #ffffff, #f8f9fa);">
+        <div class="card-body p-4">
+            <h4 class="card-title text-center mb-4" style="font-weight: bold; color: #333;">Indexes Below Threshold</h4>
+
+            <div class="threshold-results">
+                @if (State.SharedData != null && State.SharedData.Any())
+                {
+                    @foreach (var group in AnalyzeThresholds(State.SharedData))
+                    {
+                        <div class="threshold-group mb-3 p-3 border rounded" style="background-color: #fcfcfc; border-color: #e9ecef;">
+                            @if (group.Value.Any())
+                            {
+                                <h5 class="text-center mb-2" style="font-weight: bold; color: red;">
+                                    <i class="bi bi-x-circle-fill" style="color: red; margin-right: 8px;"></i>
+                                    Threshold Group @group.Key
+                                    @if (group.Key == 1)
+                                    {
+                                        <span>(Range: 0 to 2.25)</span>
+                                    }
+                                    else if (group.Key == 2)
+                                    {
+                                        <span>(Range: 0 to 2)</span>
+                                    }
+                                </h5>
+                                <p class="text-muted text-center" style="font-size: 0.9rem;">Some indexes are below the threshold.</p>
+                            }
+                            else
+                            {
+                                <h5 class="text-center mb-2" style="font-weight: bold; color: #28a745;">
+                                    <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 8px;"></i>
+                                    Threshold Group @group.Key
+                                    @if (group.Key == 1)
+                                    {
+                                        <span>(Range: 0 to 2.25)</span>
+                                    }
+                                    else if (group.Key == 2)
+                                    {
+                                        <span>(Range: 0 to 2)</span>
+                                    }
+                                </h5>
+                                <p class="text-muted text-center" style="font-size: 0.9rem;">All indexes meet the threshold.</p>
+                            }
+                            <p class="text-center mb-0" style="color: #495057;">
+                                <strong>Indexes Below Threshold:</strong>
+                                <span style="color: #333;">@string.Join(", ", group.Value)</span>
+                            </p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-data p-3 rounded text-center" style="background-color: #f8f9fa; border: 1px solid #dee2e6;">
+                        <p class="m-0" style="color: #495057; font-size: 1rem;">
+                            <i class="bi bi-exclamation-triangle-fill" style="color: #ff8800; margin-right: 8px;"></i>
+                            <strong>No data available to analyze.</strong>
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
-    
+    private Dictionary<int, List<string>> AnalyzeThresholds(Dictionary<int, double> data)
+    {
+        // Group definitions
+        var thresholds = new Dictionary<int, (double Max, List<int> Indexes)>
+        {
+            { 1, (2.25, new List<int> { 1, 2, 4, 5, 6, 7, 20, 25, 31, 32 }) },
+            { 2, (2.0, new List<int> { 10, 11, 12, 14, 15, 16, 19, 21, 22, 23, 26, 27, 28, 29, 33, 34 }) }
+        };
+
+        // Analyze data against thresholds
+        var result = new Dictionary<int, List<string>>();
+        foreach (var threshold in thresholds)
+        {
+            var groupKey = threshold.Key;
+            var groupMaxValue = threshold.Value.Max;
+            var indexes = threshold.Value.Indexes;
+
+            var belowThreshold = indexes
+                .Where(index => data.ContainsKey(index) && data[index] <= groupMaxValue)
+                .Select(index => $"I{index}")
+                .ToList();
+
+            if (belowThreshold.Any())
+            {
+                result[groupKey] = belowThreshold;
+            }
+        }
+
+        return result;
+    }
+
+    private double CalculateSum(IEnumerable<int> keys)
+    {
+        double sum = 0;
+        foreach (var key in keys)
+        {
+            if (State.SharedData.TryGetValue(key, out var value))
+            {
+                sum += value;
+                sum = Math.Round(sum, 3);
+            }
+        }
+        return sum;
+    }
 }
