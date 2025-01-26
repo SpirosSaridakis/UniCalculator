@@ -108,7 +108,7 @@
 
                 <button class="btn p-0"
                 style="background-color: lightblue; color: white; border: none; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; z-index: 0; position: relative; left: -10px;"
-                @onclick="Calculate">
+                @onclick="ToggleInfoPopup">
                     <i class="bi bi-question-circle" style="font-size: 1.5rem;"></i>
                 </button>
             </div>
@@ -118,29 +118,77 @@
 
 @if (isPopupVisible)
 {
-    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+    <div class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.5);" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Calculated Information</h5>
-                    <button type="button" class="btn-close" aria-label="Close" @onclick="TogglePopup"></button>
+            <div class="modal-content" style="border-radius: 8px; overflow: hidden;">
+                <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+                    <h5 class="modal-title" style="font-weight: 600;">Calculated Information</h5>
+                    <button type="button"
+                    class="btn-close"
+                    style="background: none; border: none; font-size: 1.2rem; color: #6c757d;"
+                    aria-label="Close"
+                    @onclick="TogglePopup"> x
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <p>This popup contains the calculated values based on the provided indexes and weights:</p>
-                    <ul>
+                <div class="modal-body" style="padding: 1rem; background-color: #ffffff;">
+                    <p style="margin-bottom: 1rem; color: #212529;">This popup contains the calculated values based on the provided indexes and weights:</p>
+                    <ul style="list-style-type: disc; padding-left: 1.5rem; color: #495057;">
                         @foreach (var value in CalculatedValues)
                         {
-                            <li>@value</li>
+                            <li style="margin-bottom: 0.5rem;">@value</li>
                         }
                     </ul>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; display: flex; justify-content: flex-end;">
+                    <button type="button"
+                    class="btn btn-secondary"
+                    style="background-color: #6c757d; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px;"
+                    @onclick="TogglePopup">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 }
+
+@if (isInfoPopupVisible)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.3);" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 10px; overflow: hidden;">
+                <div class="modal-header" style="background-color: #e9ecef; border-bottom: 1px solid #ced4da;">
+                    <h5 class="modal-title" style="font-weight: 600; color: #495057;">Indexes Configuration</h5>
+                    <button type="button"
+                            class="btn-close"
+                            style="background: none; border: none; font-size: 1.2rem; color: #6c757d;"
+                            aria-label="Close"
+                            @onclick="ToggleInfoPopup">
+                        
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 1rem; background-color: #ffffff;">
+                    <p style="margin-bottom: 1rem; color: #495057;">
+                        Indexes are categorized into two groups: those with three dropdown menus for the input values and those featuring two text fields.
+                    </p>
+                    <p style="margin-bottom: 1rem; color: #495057;">
+                        For indexes with text fields, the first field represents the base year value, while the second represents the evaluation year value. Once you’ve entered the data into the text fields, click the save button to confirm and lock the values.
+                    </p>
+                </div>
+                <div class="modal-footer" style="background-color: #e9ecef; border-top: 1px solid #ced4da; display: flex; justify-content: flex-end;">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            style="background-color: #6c757d; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px;"
+                            @onclick="ToggleInfoPopup">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 
 
 @code {
@@ -253,6 +301,7 @@
     };
 
     private bool isPopupVisible;
+    private bool isInfoPopupVisible { get; set; } = false;
     private bool isDisabled1;
     private bool isDisabled2;
 
@@ -273,7 +322,7 @@
 
             double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
             val = Math.Round(val,3);
-            CalculatedValues.Add($"Value for index type 1 = {val}");
+            CalculatedValues.Add($"Index:{index.id} = {val}");
             CheckForIndex(index.id,val);
         }
 
@@ -281,7 +330,7 @@
         {
             double val = (index.keyValues[0] + index.keyValues[1] + index.keyValues[2]) * weights[index.id];
             val = Math.Round(val, 3);
-            CalculatedValues.Add($"Value for index type 2 = {val}");
+            CalculatedValues.Add($"Index:{index.id} = {val}");
             CheckForIndex(index.id, val);
         }
 
@@ -293,7 +342,7 @@
                     res = (1/val) * weights[index.id];
                 }
                 res = Math.Round(res, 3);
-                CalculatedValues.Add($"Value for index type 3 = {res}");
+                CalculatedValues.Add($"Index:{index.id} = {res}");
                 CheckForIndex(index.id,res);
             }
         }
@@ -321,6 +370,10 @@
         if(FinalIndexes.Count == 34){
             OnFinalIndexesCalculated.InvokeAsync(FinalIndexes);
         }
+    }
+    private void ToggleInfoPopup(MouseEventArgs e)
+    {
+        isInfoPopupVisible =  !isInfoPopupVisible;
     }
 }
 

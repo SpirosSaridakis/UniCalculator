@@ -103,10 +103,12 @@
         </table>
     </div>
 </div>
-
+<p style="font-size: 1.1em; font-weight: 400; line-height: 1.6; color: #333; text-align: center; margin: 20px auto; max-width: 800px;">
+    Each Sustainabile Development Goal or SDG is the result of the sum of its indexes.
+</p>
 <h3 class="text-center mt-4" style="color: black;">Index Feedback</h3>
 
-<div class="container mt-4">
+<div class="container mt-4" style="margin-bottom: 40px;">
     <div class="card shadow-lg border-0" style="max-width: 80%; margin: 0 auto; border-radius: 15px; background: linear-gradient(to right, #ffffff, #f8f9fa);">
         <div class="card-body p-4">
             <h4 class="card-title text-center mb-4" style="font-weight: bold; color: #333;">Indexes Below Threshold</h4>
@@ -121,23 +123,23 @@
                             {
                                 <h5 class="text-center mb-2" style="font-weight: bold; color: red;">
                                     <i class="bi bi-x-circle-fill" style="color: red; margin-right: 8px;"></i>
-                                    Threshold Group @group.Key
+                                    Group @group.Key
                                     @if (group.Key == 1)
                                     {
-                                        <span>(Range: 0 to 2.25)</span>
+                                        <span> (Range: 0 to 2.25)</span>
                                     }
                                     else if (group.Key == 2)
                                     {
-                                        <span>(Range: 0 to 2)</span>
+                                        <span> (Range: 0 to 2)</span>
                                     }
                                 </h5>
-                                <p class="text-muted text-center" style="font-size: 0.9rem;">Some indexes are below the threshold.</p>
+                                <p class="text-muted text-center" style="font-size: 0.9rem;">The following indexes can be improved.</p>
                             }
                             else
                             {
                                 <h5 class="text-center mb-2" style="font-weight: bold; color: #28a745;">
                                     <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 8px;"></i>
-                                    Threshold Group @group.Key
+                                    Group @group.Key
                                     @if (group.Key == 1)
                                     {
                                         <span>(Range: 0 to 2.25)</span>
