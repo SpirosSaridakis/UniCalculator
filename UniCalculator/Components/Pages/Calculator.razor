@@ -1,4 +1,8 @@
-﻿@page "/calculator"
+﻿@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
+@inject NavigationState State
+
+@page "/calculator"
 @rendermode InteractiveServer
 
 <title>Calculator</title>
@@ -11,50 +15,126 @@
 </div>
 
 <div class="grid-container">
-    <CalcCard Title="SDG Goal 1 : No Poverty" CardID="1" HasInput="0" />
-    <CalcCard Title="SDG Goal 2 : Zero Hunger" CardID="2" HasInput="3" />
-    <CalcCard Title="SDG Goal 3 : Good Health and Well-Being" CardID="3" HasInput="0" />
-    <CalcCard Title="SDG Goal 4 : Quality Education" CardID="4" HasInput="8" />
-    <CalcCard Title="SDG Goal 5 : Gender Equality" CardID="5" HasInput="9" />
-    <CalcCard Title="SDG Goal 6 : Clean Water and Sanitation" CardID="6" HasInput="13" />
-    <CalcCard Title="SDG Goal 7 : Affordable and Clean Energy" CardID="7" HasInput="17" />
-    <CalcCard Title="SDG Goal 9 : Industry, Innovation, and Infrastructure" CardID="9" HasInput="18" />
-    <CalcCard Title="SDG Goal 10 : Reduced Inequalities" CardID="10" HasInput="0" />
-    <CalcCard Title="SDG Goal 11 : Sustainable Cities and Communities" CardID="11" HasInput="0" />
-    <CalcCard Title="SDG Goal 12 : Responsible Consumption and Production" CardID="12" HasInput="24" />
-    <CalcCard Title="SDG Goal 13 : Climate Action" CardID="13" HasInput="25" />
-    <CalcCard Title="SDG Goal 14 : Life Below Water" CardID="14" HasInput="0" />
-    <CalcCard Title="SDG Goal 15 : Life on Land" CardID="15" HasInput="0" />
-    <CalcCard Title="SDG Goal 16 : Peace, Justice, and Strong Institutions" CardID="16" HasInput="0" />
-    <CalcCard Title="SDG Goal 17 : Partnerships for the Goals" CardID="17" HasInput="30" />
-
+    <CalcCard Title="SDG Goal 1 : No Poverty" CardID="1" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 2 : Zero Hunger" CardID="2" HasInput="3" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 3 : Good Health and Well-Being" CardID="3" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 4 : Quality Education" CardID="4" HasInput="8" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 5 : Gender Equality" CardID="5" HasInput="9" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 6 : Clean Water and Sanitation" CardID="6" HasInput="13" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 7 : Affordable and Clean Energy" CardID="7" HasInput="17" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 9 : Industry, Innovation, and Infrastructure" CardID="9" HasInput="18" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 10 : Reduced Inequalities" CardID="10" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 11 : Sustainable Cities and Communities" CardID="11" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 12 : Responsible Consumption and Production" CardID="12" HasInput="24" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 13 : Climate Action" CardID="13" HasInput="25" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 14 : Life Below Water" CardID="14" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 15 : Life on Land" CardID="15" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 16 : Peace, Justice, and Strong Institutions" CardID="16" HasInput="0" OnFinalIndexesCalculated="HandleFinalIndexes" />
+    <CalcCard Title="SDG Goal 17 : Partnerships for the Goals" CardID="17" HasInput="30" OnFinalIndexesCalculated="HandleFinalIndexes" />
 </div>
 
+<div style="
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;">
+    <button style="
+        padding: 15px 15px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        background-color: #007bff; /* Bootstrap blue */
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;"
+    @onclick="ShowResults"
+    onmouseover="this.style.backgroundColor='#0056b3'; this.style.boxShadow='0 6px 8px rgba(0, 0, 0, 0.15)';"
+    onmouseout="this.style.backgroundColor='#007bff'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';"
+    onmousedown="this.style.backgroundColor='#003f7f'; this.style.transform='scale(0.95)';"
+    onmouseup="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1)';">
+        Show Results
+    </button>
+</div>
+
+@if (showErrorPopup)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Input Error
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" @onclick="TogglePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger fw-bold">Some required inputs for the calculation are missing. Please complete all fields before proceeding.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="TogglePopup">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
-    private int[] indexes1 = new int[] { 1, 2 };
-    private int[] indexes3 = new int[] { 5, 6 };
-    private int[] indexes4 = new int[] { 7, 8 };
+    bool resultsReady = false;
+    bool showErrorPopup = false;
+    
+    private void ShowResults() 
+    {
+        if(resultsReady){
+            Console.WriteLine("parent = " + ParentFinalIndexes.Count);
+            foreach (var kvp in ParentFinalIndexes)
+            {
+                State.SharedData[kvp.Key] = kvp.Value;
+            }
+            Navigation.NavigateTo("/results");
+        }else{
+            TogglePopup();
+        }
+
+    }
+
+    private Dictionary<int, double> ParentFinalIndexes = new Dictionary<int, double>();
+
+    private void HandleFinalIndexes(Dictionary<int, double> finalIndexesFromChild){
+        foreach (var kvp in finalIndexesFromChild)
+        {
+            ParentFinalIndexes[kvp.Key] = kvp.Value;
+        }
+        resultsReady = true;
+        
+    }
+    private void TogglePopup()
+    {
+        showErrorPopup = !showErrorPopup;
+    }
 }
 
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-        gap: 20px; /* Space between cards */
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 20px; 
         padding: 8px;
-        justify-content: center; /* Center the items horizontally */
-        align-items: start; /* Ensure each card is sized independently */
+        justify-content: center; 
+        align-items: start; 
     }
 
     .card {
         display: flex;
-        flex-direction: column; /* Stack content vertically */
+        flex-direction: column; 
         border: 1px solid #ccc;
-        padding: 16px; /* Equal space on all sides */
+        padding: 16px; 
         border-radius: 8px;
-        text-align: center; /* Center text inside */
-        box-sizing: border-box; /* Include padding in the total width/height */
-        width: 100%; /* Ensure the card uses the full available space */
+        text-align: center; 
+        box-sizing: border-box; 
+        width: 100%; 
     }
 </style>
