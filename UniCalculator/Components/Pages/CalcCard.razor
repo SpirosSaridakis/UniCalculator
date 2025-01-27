@@ -1,5 +1,3 @@
-
-
 <div class="card m-2 shadow-lg" style="width: 25rem;">
     <div class="card-body">
         <h5 class="card-title card-title-underline">@Title</h5>
@@ -160,11 +158,11 @@
                 <div class="modal-header" style="background-color: #e9ecef; border-bottom: 1px solid #ced4da;">
                     <h5 class="modal-title" style="font-weight: 600; color: #495057;">Indexes Configuration</h5>
                     <button type="button"
-                            class="btn-close"
-                            style="background: none; border: none; font-size: 1.2rem; color: #6c757d;"
-                            aria-label="Close"
-                            @onclick="ToggleInfoPopup">
-                        
+                    class="btn-close"
+                    style="background: none; border: none; font-size: 1.2rem; color: #6c757d;"
+                    aria-label="Close"
+                    @onclick="ToggleInfoPopup">
+
                     </button>
                 </div>
                 <div class="modal-body" style="padding: 1rem; background-color: #ffffff;">
@@ -174,12 +172,17 @@
                     <p style="margin-bottom: 1rem; color: #495057;">
                         For indexes with text fields, the first field represents the base year value, while the second represents the evaluation year value. Once you’ve entered the data into the text fields, click the save button to confirm and lock the values.
                     </p>
+                    @if(HasInput != 0){
+                    <p style="margin-bottom: 1rem; color: #495057;">
+                        @messages[HasInput]    
+                    </p>
+                    }
                 </div>
                 <div class="modal-footer" style="background-color: #e9ecef; border-top: 1px solid #ced4da; display: flex; justify-content: flex-end;">
                     <button type="button"
-                            class="btn btn-secondary"
-                            style="background-color: #6c757d; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px;"
-                            @onclick="ToggleInfoPopup">
+                    class="btn btn-secondary"
+                    style="background-color: #6c757d; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px;"
+                    @onclick="ToggleInfoPopup">
                         Close
                     </button>
                 </div>
@@ -299,6 +302,19 @@
         {33,0.114},
         {34,0.143}
     };
+
+Dictionary<int,string> messages = new Dictionary<int, string>
+{
+    { 3, "In the input fields please enter the value of waste kilograms divided by the campus population. First for the base year and then for the year of evaluation" },
+    { 8, "In the input fields please enter the number of first year students divided by the number of students that graduated. First for the base year and then for the year of evaluation" },
+    { 9, "In the input fields please enter the number of female senior academic staff divided by the total number of senior academic staff. First for the base year and then for the year of evaluation" },
+    { 13, "In the input fields please enter the amount of water in cubic meters divided by the campus population. First for the base year and then for the year of evaluation" },
+    { 17, "In the input fields please enter the total amount of energy used in Gigajoules divided by the total floor space of the university buildings in squared meters. First for the base year and then for the year of evaluation" },
+    { 18, "In the input fields please enter the total research income divided by the number of academic staff. First for the base year and then for the year of evaluation" },
+    { 24, "In the input fields please enter the amount of waste recycled divided by the total amount of waste generated. First for the base year and then for the year of evaluation" },
+    { 30, "In the input fields please enter the number of publications divided by the number of academic staff. First for the base year and then for the year of evaluation" }
+};
+
 
     private bool isPopupVisible;
     private bool isInfoPopupVisible { get; set; } = false;
