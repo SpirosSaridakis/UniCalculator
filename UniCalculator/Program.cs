@@ -8,6 +8,9 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddSingleton<NavigationState>();
 
+var baseAddress = new Uri("https://spirossaridakis.github.io/UniCalculator/");
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseAddress });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
