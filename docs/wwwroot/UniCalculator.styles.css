@@ -1,4 +1,4 @@
-/* _content/UniCalculator/Components/Layout/MainLayout.razor.rz.scp.css */
+/* ./Components/Layout/MainLayout.razor.rz.scp.css */
 .page[b-b9pvpbciwj] {
     position: relative;
     display: flex;
@@ -95,7 +95,7 @@ main[b-b9pvpbciwj] {
         right: 0.75rem;
         top: 0.5rem;
     }
-/* _content/UniCalculator/Components/Layout/NavMenu.razor.rz.scp.css */
+/* ./Components/Layout/NavMenu.razor.rz.scp.css */
 .navbar-toggler[b-ulbhq269vt] {
     appearance: none;
     cursor: pointer;
