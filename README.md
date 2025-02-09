@@ -46,12 +46,3 @@ UniCalculator is a web application designed to evaluate whether a university has
 ## Contributing
 
 Contributions are welcome! Feel free to submit a pull request or open an issue for discussion.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For inquiries, please contact [your email or website].
-
