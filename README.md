@@ -34,8 +34,6 @@ UniCalculator is a web application designed to evaluate whether a university has
    dotnet build
    dotnet run
    ```
-4. Open a web browser and go to `http://localhost:5000` (or the specified port).
-
 ## Usage
 
 1. Navigate to the calculator page.
